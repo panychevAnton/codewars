@@ -1,15 +1,21 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import java.util.Arrays;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        System.out.println(Solution.solution(new int[]{1,2,3}, new int[]{4,5,6}));
+    }
+}
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+//task: Mean Square Error
+class Solution {
+    public static double solution(int[] arr1, int[] arr2) {
+        for (int i = 0; i < arr1.length; i++) {
+            if (arr1[i] > arr2[i])
+                arr1[i] = (int) Math.pow(arr1[i] - arr2[i], 2);
+            else
+                arr1[i] = (int) Math.pow(arr2[i] - arr1[i], 2);
         }
+
+        return Arrays.stream(arr1).average().orElse(0);
     }
 }
