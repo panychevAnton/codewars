@@ -1,4 +1,4 @@
-import java.util.Arrays;
+import java.util.stream.IntStream;
 
 public class Main {
     public static void main(String[] args) {
@@ -9,13 +9,9 @@ public class Main {
 //task: Mean Square Error
 class Solution {
     public static double solution(int[] arr1, int[] arr2) {
-        for (int i = 0; i < arr1.length; i++) {
-            if (arr1[i] > arr2[i])
-                arr1[i] = (int) Math.pow(arr1[i] - arr2[i], 2);
-            else
-                arr1[i] = (int) Math.pow(arr2[i] - arr1[i], 2);
-        }
-
-        return Arrays.stream(arr1).average().orElse(0);
+        return IntStream.range(0, arr1.length)
+                .mapToDouble(i -> Math.pow((arr1[i] > arr2[i] ? arr1[i] - arr2[i] : arr2[i] - arr1[i]), 2))
+                .average()
+                .orElse(0.0);
     }
 }
