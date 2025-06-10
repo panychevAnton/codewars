@@ -13,7 +13,7 @@ Expect (18078,34060)(2262,34060)(25545,34060)
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println(Fracts.convertFrac(new long[][] { {} }));
+        System.out.println(Fracts.convertFrac(new long[][] { }));
     }
 }
 
@@ -31,7 +31,14 @@ class Solution {
 //task: Common Denominators
 class Fracts {
     public static String convertFrac(long[][] lst) {
+        return switch (lst.length) {
+            case 0 -> "";
+            case 1 -> lst[0].length == 0 ? "" : "(" + lst[0][0] + "," + lst[0][1] + ")";
+            default -> getConvertetListAsString(lst);
+        };
+    }
 
+    static String getConvertetListAsString(long[][] lst) {
         lst = Arrays.stream(lst).map(arr -> {
             var gcd = gcd(arr[0], arr[1]);
             return new long[]{arr[0] / gcd, arr[1] / gcd};
@@ -43,7 +50,9 @@ class Fracts {
             tempLCM = lcm.applyAsLong(tempLCM, lst[i][1]);
 
         long listLCM = tempLCM;
-        return Arrays.stream(lst).map(x -> "(" + listLCM / x[1] * x[0] + "," + listLCM + ")").collect(Collectors.joining("")); //(6,12)(4,12)(3,12)
+        return Arrays.stream(lst)
+                .map(x -> "(" + listLCM / x[1] * x[0] + "," + listLCM + ")")
+                .collect(Collectors.joining(""));
     }
 
     static LongBinaryOperator lcm = (a, b) -> a * b / gcd(a , b);
