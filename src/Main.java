@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.LongBinaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -13,7 +15,8 @@ Expect (18078,34060)(2262,34060)(25545,34060)
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println(Fracts.convertFrac(new long[][] { }));
+        var list = Permutations.singlePermutations("abc");
+        System.out.println(String.join(",", list));
     }
 }
 
@@ -62,5 +65,33 @@ class Fracts {
         long lowest = Math.min(a, b);
         long diff = greatest - lowest;
         return diff == 0 ? greatest : gcd(lowest, diff);
+    }
+}
+
+//task: So Many Permutations!
+class Permutations {
+    enum ShiftDirection {
+        LEFT, RIGHT
+    }
+    static ShiftDirection currDirection = ShiftDirection.LEFT;
+
+    public static List<String> singlePermutations(String s) {
+
+        var stepCount = 0;
+        List<String> permutations = new ArrayList<>();
+        while (stepCount < s.length() * 2) {
+            if (stepCount == s.length())
+                currDirection = ShiftDirection.RIGHT;
+            s = shift(s);
+            permutations.add(s);
+            stepCount++;
+        }
+        return permutations;
+    }
+
+    static String shift(String s){
+        return (currDirection == ShiftDirection.LEFT) ?
+                s.substring(1) + s.charAt(0) :
+                s.substring(s.length() - 1) + s.substring(0, s.length() - 1);
     }
 }
