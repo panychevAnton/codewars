@@ -1,5 +1,7 @@
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.LongBinaryOperator;
 import java.util.stream.Collectors;
@@ -15,10 +17,10 @@ Expect (18078,34060)(2262,34060)(25545,34060)
 
 public class Main {
     public static void main(String[] args) {
-        var list = Permutations.singlePermutations("abc");
-        System.out.println(String.join(",", list));
+        System.out.println(Permutations.singlePermutations("abc"));
     }
 }
+
 
 
 //task: Mean Square Error
@@ -70,28 +72,14 @@ class Fracts {
 
 //task: So Many Permutations!
 class Permutations {
-    enum ShiftDirection {
-        LEFT, RIGHT
-    }
-    static ShiftDirection currDirection = ShiftDirection.LEFT;
-
     public static List<String> singlePermutations(String s) {
-
-        var stepCount = 0;
-        List<String> permutations = new ArrayList<>();
-        while (stepCount < s.length() * 2) {
-            if (stepCount == s.length())
-                currDirection = ShiftDirection.RIGHT;
-            s = shift(s);
-            permutations.add(s);
-            stepCount++;
-        }
-        return permutations;
-    }
-
-    static String shift(String s){
-        return (currDirection == ShiftDirection.LEFT) ?
-                s.substring(1) + s.charAt(0) :
-                s.substring(s.length() - 1) + s.substring(0, s.length() - 1);
+        var chars = s.split("");
+        return Arrays.stream(s.split("")).mapMulti((str, safe) -> {
+            for (int i = 0; i < chars.length; i++) {
+                var charsTemp = Arrays.copyOf(chars, chars.length);
+                charsTemp[i] = str;
+                safe.accept(String.join("", charsTemp));
+            }
+        }).distinct().map(Object::toString).toList();
     }
 }
